@@ -4,6 +4,7 @@ from tkinter import filedialog
 from tensorflow import keras
 from gerencia_imagem import GerenciaImagem as gm
 
+import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
 import sys
@@ -23,9 +24,9 @@ class Tela(object):
         self.s_imagem  = ''
 
         #modelo
-        self.model = tf.keras.models.load_model('modelo_teste_sem_flor')
+        self.model = tf.keras.models.load_model('modelo2')
         self.nome_classe = [
-            'airplane', 'car', 'cat', 'dog', 'fruta', 'motorbike', 'person'
+            'aviao', 'carro', 'gato', 'cao', 'flor', 'fruta', 'moto', 'rosto'
         ]
 
         #container
@@ -63,15 +64,18 @@ class Tela(object):
         predicao = self.model.predict(imagem)
         predicao_maior_confianca = np.argmax(predicao[0])
         self.label_prv['text'] = f'previsao:{self.nome_classe[predicao_maior_confianca]} {predicao_maior_confianca}'
-        list_index = [0,1,2,3,4,5,6]
-        for i in range(6):
-            print()
+
+        gm.mostra_imagem(self.nome_classe[predicao_maior_confianca], gm.abri_imagem(self.s_imagem))
+
+        list_index = [0,1,2,3,4,5,6, 7]
+        print()
+        for i in range(7):
             print(self.nome_classe[list_index[i]], ':', round(predicao[0][list_index[i]] * 100, 2), '%')
+
 
 def main():
     root = Tk()
     Tela(root)
-    # root.geometry('x50')
     root.resizable(width=0, height=0)
     root.mainloop()
 
